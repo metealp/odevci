@@ -24,7 +24,7 @@
 <script>
 import InputText from 'primevue/inputtext';
 import Password from 'primevue/password';
-import SocialLogin from '@/components/Authentication/SocialLogin.vue';
+import SocialLogin from '../components/Authentication/SocialLogin.vue';
 
 export default {
   name: 'Signin',

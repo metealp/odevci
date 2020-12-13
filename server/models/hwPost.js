@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const hwPostSchema = new Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
+    deadline: {type: Date, required: true},
     files: {
         type: file,
         required: false,
@@ -19,7 +20,11 @@ const hwPostSchema = new Schema({
     comments: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comment"
-    }]
+    }],
+    contractor: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }
 })
 
 // Create a model

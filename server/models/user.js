@@ -38,6 +38,10 @@ const userSchema = new Schema({
             ref: "Comment"
         }
     ],
+    undertakens: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "HWPost"
+    }],
     country: String,
     local: {
         email: {

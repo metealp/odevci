@@ -7,9 +7,9 @@ const rateSchema = new Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    ratedPost: {
+    ratedUser: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "HWPost"
+        ref: "User"
     }
 })
 
