@@ -10,7 +10,7 @@ const passportSignIn = passport.authenticate('local', { session: false });
 const passportJWT = passport.authenticate('jwt', { session: false });
 const googleMW = require('../middlewares/googleAuth')
 const authRoutes = express.Router()
-
+const facebookMW = require('../middlewares/facebookAuth');
 
 // sign up with email
 authRoutes.post('/signup',
@@ -34,7 +34,8 @@ authRoutes.post('/google',
 
 //signin with facebook auth
 authRoutes.post('/facebook',
-    [passport.authenticate('facebookToken', { session: false }),],
+    // [passport.authenticate('facebookToken', { session: false }),],
+    facebookMW,
     authController.facebookOAuth
 );
 

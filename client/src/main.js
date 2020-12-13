@@ -9,6 +9,7 @@ import './assets/theme.module.css';
 import 'primevue/resources/themes/vela-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
+// import jwtInterceptor from './helpers/jwtInterceptor';
 
 const gauthOption = {
   clientId: '772542476633-mcdtvmpmfigje4u8ummt2gkro86889so.apps.googleusercontent.com',
@@ -17,6 +18,7 @@ const gauthOption = {
 };
 
 // Vue.prototype.$primevue = {ripple: true};
+// jwtInterceptor();
 
 export default createApp(App).use(store).use(router).use(GAuth, gauthOption)
 .mount('#app');

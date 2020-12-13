@@ -31,16 +31,15 @@ module.exports = async function(req, res, next) {
                 email: payload.email,
             }
         })
-        await newUser.save(function(err){
-            if(err) {
-                console.log('user saving error');
-                // return handleError(err); // in production
-                return
-            }
-        })
-        console.log("new user saved")
+        // await newUser.save(function(err){
+        //     if(err) {
+        //         console.log('user saving error');
+        //         return
+        //     }
+        // })
+        req.user = newUser;
     } else {
-        console.log(JSON.stringify(isExistingUser))
+        req.user = isExistingUser;
     }
     next();
 }

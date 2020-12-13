@@ -17,10 +17,11 @@ export default {
     const store = useStore();
     const loginStatus = computed(() => store.state.authStore.isLoggedIn);
 
-    async function logInWithFacebook() {
+    const logInWithFacebook = async function() {
+
       window.FB.login(function(response) {
         if (response.authResponse) {
-            console.log(response);
+            // console.log(response);
             // fbStatusHandler(response)
             store.dispatch('authStore/authViaFacebook', response);
           // Now you can redirect the user or do an AJAX request to
@@ -28,7 +29,7 @@ export default {
         } else {
           alert("User cancelled login or did not fully authorize.");
         }
-      });
+      }, {scope: 'public_profile,email'});
       return false;
     };
 
