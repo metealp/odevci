@@ -29,12 +29,22 @@ module.exports = {
             iss: 'Kelam',
             sub: userid,
             iat: new Date().getTime(),
-            exp: new Date().setDate(new Date().getTime() + 1)
+            exp: new Date().setDate(new Date().getDate() + 1)
         }, JWT_SECRET);
     },
     
-    verifyToken: (token) => {
-        return JWT.verify(token, JWT_SECRET);
+    verifyToken: async (req, res, next) => {
+        JWT.verify(req.headers.authorization.split(" ")[1], JWT_SECRET, function(error, decoded){
+            if (!error){
+                console.log("decoded.sub._id", decoded.sub._id);
+                res.locals.userid = decoded.sub._id;
+                next();
+            } else {
+                console.log("Server did not verify the token", error)
+                res.status(500).json({isSuccess: false, message: error})
+                return
+            }
+        });
     },
     
     decodeToken: (token) => {

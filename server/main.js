@@ -8,6 +8,8 @@ const passport = require('passport');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const authRoutes = require('./routes/auth')
+const hwRoutes = require('./routes/hwpost')
+
 // const postRoutes = require('./routes/hwpost')
 const morgan = require('morgan')
 
@@ -34,7 +36,7 @@ app.get('/', (req, res)=>{
 // routes.initialize(app);
 
 app.use('/auth', authRoutes);
-// app.use('/hwpost', postRoutes);
+app.use('/posts', hwRoutes);
 
 app.use(function(req, res, next){
     req.db = db;

@@ -1,79 +1,76 @@
-import HWPost from '../models/hwPost';
-import User from '..//models/user';
-import { getUserIdViaToken } from '../helpers/tokenHelper';
+const HWPost = require('../models/hwPost');
+const User = require('..//models/user');
+const getUserIdViaToken = require('../helpers/tokenHelper');
 
 const retrieveAllHWPosts = async function(req, res) {
-    const posts = HWPost.find({}, ['title', 'description'], function(error){
-        res.status(500).json({isSuccess: false, message: 'Server could not retrieve posts.', error});
-        return
-    });
+    const posts = await HWPost.find({},['title', 'description']).exec();
     res.status(200).json({isSuccess: true, message: 'Server has returned all posts.', posts });
 };
 
 const retrieveOneHWPost = async function(req, res) {
-    const targetPost = HWPost.findOne({_id = req.params.postid }, 
-        function(error){
-            res.status(500).json({isSuccess: false, message: 'Server could not retrieve the post.', error});
+    const postID = req.params.postid;
+    try {
+        const targetPost = await HWPost.findOne({_id: postID }).exec(); 
+        if (targetPost){
+            res.status(200).json({isSuccess: true, message: 'Server has returned the post.', targetPost });
+        } else {
+            res.status(500).json({isSuccess: false, message: 'Server could not find the post.', error});
+            return;
         }
-    )
-    res.status(200).json({isSuccess: true, message: 'Server has returned the post.', targetPost });
+    } catch (error) {
+        res.status(500).json({isSuccess: false, message: 'Server could not cast the post id.', error});
+        return;
+    }
 };
 
 const createHWPost = async function( req, res ) {
-    const requestOwnerToken = req.headers.authorization.split(" ")[1];
-    const creatorId = getUserIdViaToken(requestOwnerToken);
-    const creator = User.findOne({_id: creatorId}, 
-        function(error){
-            res.status(500).json({isSuccess: false, message: 'Server could not save the user.', error});
-        }
-    );
-    const newPost = new HWPost({
-        title: req.body.title,
-        description: req.body.description,
-        deadline: req.body.deadline,
-        postedUser: creator,
-        files: req.body.files,
-    });
-    newPost.save(
-        function(error){
-            res.status(500).json({isSuccess: false, message: 'Server could not save the post.', error});
-        }
-    )
-
-    res.status(200).json({isSuccess: true, message: 'Server has saved the post.', newPost })
-};
-
-const updateHWPost = async function( req, res ) {
-    HWPost.findOneAndUpdate(
-        { _id: req.params.postid }, //query
-        { 
+    try {
+        const creator = await User.findOne({_id: res.locals.userid}).exec(); 
+        const newPost = new HWPost({
             title: req.body.title,
             description: req.body.description,
             deadline: req.body.deadline,
-            files: req.body.files,
-        }, //update
-        function (error){ //callback
-            res.status(500).json({isSuccess: false, message: 'Server could not update the post.'});
-            return
-        }
-    );
-    const targetPost = HWPost.findById(req.params.postid, 
-        function(error){
-            res.status(500).json({isSuccess: false, message: 'Server could not find the post.', error});
-        }
-    );
-    res.status(200).json({ isSuccess: true, message: 'Updated the post.', targetPost });
+            postedUser: creator,
+            // files: req.body.files,
+        });
+        await newPost.save();
+        res.status(200).json({isSuccess: true, message: 'Server has saved the post.', newPost })
+    } catch (error) {
+        res.status(500).json({isSuccess: false, message: 'Server could not add the new post.', error});
+    }
+};
+
+const updateHWPost = async function( req, res ) {
+    try {
+        const updatedDoc = await HWPost.findOneAndUpdate({ _id: req.params.postid }, //query
+            { 
+                title: req.body.title,
+                description: req.body.description,
+                deadline: req.body.deadline,
+                // files: req.body.files,
+            }, 
+            {new: true}) //update
+        res.status(200).json({ isSuccess: true, message: 'Updated the post.', updatedDoc });
+            
+    } catch (error) {
+        res.status(502).json({ isSuccess: false, message: error });
+        return;
+    }
 };
 
 const deleteHWPost = async function( req, res ) {
     HWPost.findOneAndRemove(
         { _id: req.params.postid }, //query
-        function (error){ //callback
-            res.status(500).json({isSuccess: false, message: 'Server could not delete the post.', error});
-            return
+        function (error, doc){ //callback
+            if (error) {
+                res.status(500).json({isSuccess: false, message: 'Server could not delete the post.', error});
+                return
+            } else {
+
+                res.status(200).json({ isSuccess: true, message: 'Deleted the post.', doc });
+            }
         }
     );
-    res.status(200).json({ isSuccess: true, message: 'Deleted the post.' });
 
 };
 

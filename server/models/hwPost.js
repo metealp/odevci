@@ -5,10 +5,10 @@ const hwPostSchema = new Schema({
     title: {type: String, required: true},
     description: {type: String, required: true},
     deadline: {type: Date, required: true},
-    files: {
-        type: file,
-        required: false,
-    },
+    // files: {
+    //     type: file,
+    //     required: false,
+    // },
     postedUser: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

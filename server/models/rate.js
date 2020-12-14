@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const rateSchema = new Schema({
-    rate: Int,
+    rate: Number,
     rater: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"

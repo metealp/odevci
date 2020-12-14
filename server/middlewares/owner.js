@@ -1,11 +1,11 @@
-import HWPost from '../models/hwPost';
-import Comment from '../models/comment';
-import Rate from '../models/rate';
-import Bid from '../models/bid';
-import { getUserIdViaToken } from '../helpers/tokenHelper';
+const HWPost = require('../models/hwPost');
+const Comment = require('../models/comment');
+const Rate = require('../models/rate');
+const Bid = require('../models/bid');
+const getUserIdViaToken = require('../helpers/tokenHelper');
 
-const rejectPostOwner = function (req, res, next) {
-    const foundPost = HWPost.findOne({_id: req.params.postid});
+const rejectPostOwner = async function (req, res, next) {
+    const foundPost = await HWPost.findOne({_id: req.params.postid}).exec();
     const postOwner = foundPost.postedUser;
     const requestOwnerToken = req.headers.authorization.split(" ")[1];
     
@@ -15,8 +15,8 @@ const rejectPostOwner = function (req, res, next) {
     }
     next();
 }
-const allowCommentOwner = function (req, res, next) {
-    const foundComment = Comment.findOne({_id: req.params.commentid});
+const allowCommentOwner = async function (req, res, next) {
+    const foundComment = await Comment.findOne({_id: req.params.commentid}).exec();
     const commentOwner = foundComment.commentedUser;
     const requestOwnerToken = req.headers.authorization.split(" ")[1];
     
@@ -26,19 +26,18 @@ const allowCommentOwner = function (req, res, next) {
     }
     next();
 }
-const allowPostOwner = function (req, res, next) {
-    const foundPost = Comment.findOne({_id: req.params.commentid});
-    const postOwner = foundPost.postedUser;
-    const requestOwnerToken = req.headers.authorization.split(" ")[1];
-    
-    if (getUserIdViaToken(requestOwnerToken) != postOwner._id) {
+const allowPostOwner = async function (req, res, next) {
+    const foundPost = await HWPost.findOne({_id: req.params.postid}).exec();
+    const postOwnerId = foundPost.postedUser;
+    const requestOwnerId = res.locals.userid;
+    if (requestOwnerId != postOwnerId) {
         res.status(401).json({isSuccess: false, message: 'Only owner can alter.'});
         return
     }
     next();
 }
-const allowRateOwner = function (req, res, next) {
-    const foundRate = Rate.findOne({_id: req.params.commentid});
+const allowRateOwner = async function (req, res, next) {
+    const foundRate = await Rate.findOne({_id: req.params.rateid}).exec();
     const rateOwner = foundRate.rater;
     const requestOwnerToken = req.headers.authorization.split(" ")[1];
     
@@ -48,8 +47,8 @@ const allowRateOwner = function (req, res, next) {
     }
     next();
 }
-const allowBidOwner = function (req, res, next) {
-    const foundBid = Bid.findOne({_id: req.params.commentid});
+const allowBidOwner = async function (req, res, next) {
+    const foundBid = await Bid.findOne({_id: req.params.bidid}).exec();
     const bidOwner = foundBid.bidder;
     const requestOwnerToken = req.headers.authorization.split(" ")[1];
     

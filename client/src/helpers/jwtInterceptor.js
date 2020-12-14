@@ -11,7 +11,7 @@ export function jwtInterceptor() {
 
         if (isLoggedIn && isApiUrl) {
             // eslint-disable-next-line no-param-reassign
-            request.headers.common.Authorization = `Bearer ${userToken}`;
+            request.headers.Authorization = `Bearer ${userToken}`;
         }
 
         return request;
