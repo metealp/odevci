@@ -3,8 +3,10 @@ const express = require('express');
 const ownerMW = require('../middlewares/owner');
 const authHelper = require('../helpers/authHelper');
 const hwController = require('../controllers/hwpost');
+const commRoutes = require('./comment')
 
 const hwRoutes = express.Router();
+hwRoutes.use('/:postid/comment', commRoutes);
 
 hwRoutes.get('/',
     hwController.retrieveAllHWPosts

@@ -28,7 +28,7 @@ const hwPostSchema = new Schema({
 })
 
 // Create a model
-const HWPost = mongoose.model('hwpost', hwPostSchema);
+const HWPost = mongoose.model('HWPost', hwPostSchema);
 
 // Export the model
 module.exports = HWPost;

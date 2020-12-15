@@ -17,10 +17,15 @@ const rejectPostOwner = async function (req, res, next) {
 }
 const allowCommentOwner = async function (req, res, next) {
     const foundComment = await Comment.findOne({_id: req.params.commentid}).exec();
-    const commentOwner = foundComment.commentedUser;
-    const requestOwnerToken = req.headers.authorization.split(" ")[1];
-    
-    if (getUserIdViaToken(requestOwnerToken) != commentOwner._id) {
+    foundComment
+    console.log(foundComment);
+
+    const commentOwnerId = foundComment.commenter;
+    const requestOwnerId = res.locals.userid;
+    console.log(commentOwnerId);
+    console.log(requestOwnerId);
+
+    if (requestOwnerId != commentOwnerId) {
         res.status(401).json({isSuccess: false, message: 'Only owner can alter.'});
         return
     }

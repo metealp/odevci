@@ -14,7 +14,7 @@ const rateSchema = new Schema({
 })
 
 // Create a model
-const Rate = mongoose.model('rate', rateSchema);
+const Rate = mongoose.model('Rate', rateSchema);
 
 // Export the model
 module.exports = Rate;

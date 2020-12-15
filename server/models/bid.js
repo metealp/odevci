@@ -14,7 +14,7 @@ const bidSchema = new Schema({
 })
 
 // Create a model
-const Bid = mongoose.model('bid', bidSchema);
+const Bid = mongoose.model('Bid', bidSchema);
 
 // Export the model
 module.exports = Bid;
