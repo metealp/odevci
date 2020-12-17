@@ -4,7 +4,7 @@ import App from './App.vue';
 import './registerServiceWorker';
 import router from './router';
 // eslint-disable-next-line import/extensions
-import store from './store';
+import { store } from './store';
 import './assets/theme.module.css';
 import 'primevue/resources/themes/vela-blue/theme.css';
 import 'primevue/resources/primevue.min.css';

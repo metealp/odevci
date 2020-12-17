@@ -31,7 +31,7 @@ export default {
             {
               label: `Homeworks`,
               icon: 'pi pi-briefcase',
-              to: '/homeworks',
+              to: '/posts',
             },
             {
               label: 'Sign In',

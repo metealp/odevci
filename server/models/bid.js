@@ -10,6 +10,10 @@ const bidSchema = new Schema({
     bidOnPost: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "HWPost"
+    },
+    isContractedBid: {
+        type: Boolean,
+        default: false,
     }
 })
 

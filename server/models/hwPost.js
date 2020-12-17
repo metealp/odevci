@@ -24,7 +24,11 @@ const hwPostSchema = new Schema({
     contractor: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }
+    },
+    contractedBid: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Bid"
+    } 
 })
 
 // Create a model

@@ -3,6 +3,9 @@ import Home from '../views/Home.vue';
 import Signin from '../views/Signin.vue';
 import Signup from '../views/Signup.vue';
 import UserProfile from '../views/UserProfile.vue';
+import HomeworkList from '../views/HomeworkList.vue';
+import HomeworkDetail from '../views/HomeworkDetail.vue';
+import NewHomework from '../views/NewHomework.vue';
 
 const routes = [
   {
@@ -25,6 +28,21 @@ const routes = [
     name: 'UserProfile',
     component: UserProfile,
     // beforeEnter: authGuard,
+  },
+  {
+    path: '/posts',
+    name: 'Posts',
+    component: HomeworkList,
+  },
+  {
+    path: '/posts/new',
+    name: 'NewHomework',
+    component: NewHomework,
+  },
+  {
+    path: '/posts/:postid',
+    name: 'PostDetail',
+    component: HomeworkDetail,
   },
   // {
   //   path: '/about',

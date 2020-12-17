@@ -1,9 +1,13 @@
 /* eslint-disable */ 
 import { createStore } from 'vuex';
 import { authStore } from './authStore.js';
+import hwStore from './hwStore.js';
 
-export default createStore({
+
+export const store = createStore({
+  namespaced: true,
   modules: {
+    hwStore,
     authStore,
   },
 });

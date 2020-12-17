@@ -10,6 +10,17 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
+  plugins: ["import"],
+  settings: {
+    "import/resolver": {
+      alias: {
+        map: [
+          ["@", "./src"],
+        ],
+        extensions: [".vue", ".json", ".js"],
+      },
+    },
+  },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -19,6 +30,11 @@ module.exports = {
     'consistent-return': 'off',
     'object-shorthand': 'off',
     'prefer-destructuring': 'off',
+    eqeqeq: 'off',
+    'no-underscore-dangle': ["warning", { allow: ["_id"] }],
+    // '@vue/airbnb/no-underscore-dangle': "off",
+    // '@babel-eslint/no-underscore-dangle': "off",
+
   },
   overrides: [
     {
@@ -26,6 +42,12 @@ module.exports = {
         '**/__tests__/*.{j,t}s?(x)',
         '**/tests/unit/**/*.spec.{j,t}s?(x)',
       ],
+      rules: {
+        // '@vue/airbnb/no-underscore-dangle': "off",
+        // '@babel-eslint/no-underscore-dangle': "off",
+      'no-underscore-dangle': ["warning", { allow: ["_id"] }],
+
+      },
       env: {
         jest: true,
       },

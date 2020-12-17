@@ -1,12 +1,8 @@
 const Comment = require('../models/comment');
 const HWPost = require('../models/hwPost');
 const User = require('../models/user');
-// import { getUserIdViaToken } from '../helpers/tokenHelper';
 
 const createComment = async function( req, res ) {
-    //finding post to add bid
-    // console.log(req.params.postid);
-    //push bid to post
     try {
         const targetPost = await HWPost.findOne({_id: req.params.postid}).exec();
         //finding bidder
@@ -23,6 +19,7 @@ const createComment = async function( req, res ) {
         res.status(200).json({isSuccess: true, message: 'Server saved the comment.'})
         
     } catch (error) {
+        res.status(500).json({isSuccess: false, message: 'Server could not create the comment.', error});
         console.log(error)
     }
 };
@@ -34,11 +31,9 @@ const updateComment = async function( req, res ) {
             { commentText: req.body.commentText }, //update
             {new: true} 
         );
-        
         res.status(200).json({ isSuccess: true, message: 'Updated the comment.', updatedComm });
-
     } catch (error) {
-        res.status(500).json({isSuccess: false, message: 'Server could not find the comment after saving.', error});
+        res.status(500).json({isSuccess: false, message: 'Server could not update the comment.', error});
     }
 };
 
