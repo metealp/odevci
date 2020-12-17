@@ -31,7 +31,7 @@ module.exports = {
     'object-shorthand': 'off',
     'prefer-destructuring': 'off',
     eqeqeq: 'off',
-    'no-underscore-dangle': ["warning", { allow: ["_id"] }],
+    'no-underscore-dangle': ["warn", { allow: ["_id"] }],
     // '@vue/airbnb/no-underscore-dangle': "off",
     // '@babel-eslint/no-underscore-dangle': "off",
 
@@ -45,7 +45,7 @@ module.exports = {
       rules: {
         // '@vue/airbnb/no-underscore-dangle': "off",
         // '@babel-eslint/no-underscore-dangle': "off",
-      'no-underscore-dangle': ["warning", { allow: ["_id"] }],
+      'no-underscore-dangle': ["warn", { allow: ["_id"] }],
 
       },
       env: {
