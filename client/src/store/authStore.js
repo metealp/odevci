@@ -77,7 +77,7 @@ export const authStore = {
         context.commit('setUser', { userid, token });
           // context.commit('setUserTimeout', payload.authResponse.expiresIn * 1000);
       })
-      .catch((error) => { throw new Error(error.message); });
+      .catch((error) => { console.log(error); });
     },
     async authViaFacebook(context, payload) {
       if (payload.status === 'connected') {
