@@ -34,17 +34,23 @@ module.exports = {
     },
     
     verifyToken: async (req, res, next) => {
-        JWT.verify(req.headers.authorization.split(" ")[1], JWT_SECRET, function(error, decoded){
-            if (!error){
-                console.log("decoded.sub._id", decoded.sub._id);
-                res.locals.userid = decoded.sub._id;
-                next();
-            } else {
-                console.log("Server did not verify the token", error)
-                res.status(500).json({isSuccess: false, message: error})
-                return
-            }
-        });
+        try {
+            JWT.verify(req.headers.authorization.split(" ")[1], JWT_SECRET, function(error, decoded){
+                if (!error){
+                    console.log("decoded.sub._id", decoded.sub._id);
+                    res.locals.userid = decoded.sub._id;
+                    next();
+                } else {
+                    console.log("Server did not verify the token", error)
+                    res.status(500).json({isSuccess: false, message: error})
+                    return
+                }
+            });
+        } catch (error) {
+            console.log("Could not verify token", error)
+            res.status(500).json({isSuccess: false, message: error})
+            return
+        }
     },
     
     decodeToken: (token) => {

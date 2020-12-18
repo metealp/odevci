@@ -52,12 +52,28 @@ export default {
                 return error;
             }
         },
-        async updatePost(context, postid) {
+        async createPost(context, payload) {
             try {
-                axios.put(`http://localhost:3000/posts/${postid}`)
-                .then((res) => {
+                axios.post(`http://localhost:3000/posts/new`, payload)
+                .then(async (res) => {
                     if (res.data.isSuccess) {
-                        router.push(`/posts/${postid}`);
+                        await context.commit('setSubjectPost', res.data.newPost);
+                        router.push(`/posts/${res.data.newPost._id}`);
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+        async updatePost(context, payload) {
+            console.log(payload);
+            try {
+                axios.put(`http://localhost:3000/posts/${context.state.subjectPost._id}`, payload)
+                .then(async (res) => {
+                    if (res.data.isSuccess) {
+                        console.log(res.data.updatedDoc);
+                        await context.commit('setSubjectPost', res.data.updatedDoc);
+                        router.push(`/posts/${context.state.subjectPost._id}`);
                     }
                 });
             } catch (error) {
