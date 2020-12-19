@@ -8,7 +8,7 @@ const createBid = async function( req, res ) {
         const targetPost = await HWPost.findOne({_id: req.params.postid}).exec();
         //finding bidder
         const bidder = await User.findOne({_id: res.locals.userid}).exec();
-        const newBid = await Bid.create({ amount: req.body.price, bidder: bidder});
+        const newBid = await Bid.create({ amount: req.body.amount, bidder: bidder});
         //push bid to post
         await targetPost.bids.push(newBid._id);
     
@@ -30,7 +30,7 @@ const updateBid = async function( req, res ) {
     try {
         const updatedBid = await Bid.findOneAndUpdate(
             { _id: req.params.bidid }, //query
-            { amount: req.body.price }, //update
+            { amount: req.body.amount }, //update
             {new: true}    
         );
         res.status(200).json({ isSuccess: true, message: 'Updated the bid.', updatedBid });

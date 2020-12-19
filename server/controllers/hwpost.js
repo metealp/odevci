@@ -63,7 +63,7 @@ const deleteHWPost = async function( req, res ) {
         { _id: req.params.postid }, //query
         function (error, doc){ //callback
             if (error) {
-                res.status(500).json({isSuccess: false, message: 'Server could not delete the post.', error});
+                res.status(500).json({isSuccess: false, message: 'Server could not delete the post.', error: error.message });
                 return
             } else {
 

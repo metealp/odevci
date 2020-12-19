@@ -35,7 +35,35 @@
       <Button label="Submit" @click="updatePostEvt"
       class="p-button-raised p-button-rounded p-button" />
     </div>
+    <p>Comments</p>
+      <Button label="New comment" @click="newCommentEvt"
+      class="p-button-raised p-button-rounded p-button-sm" />
+      <InputText id="newCommentInp" v-model="commentInp" type="text" />
 
+    <div>
+      <div v-for="comment in post.comments" v-bind:key="comment._id">
+        <h2>{{ comment.commentText }} </h2>
+        <Button label="Delete comment" @click="deleteCommentEvt(comment._id)"
+        class="p-button-raised p-button-rounded p-button-sm" />
+        <Button label="Update comment" @click="updateCommentEvt(comment._id)"
+        class="p-button-raised p-button-rounded p-button-sm" />
+      </div>
+    </div>
+
+    <p>Bids</p>
+    <Button label="New bid" @click="newBidEvt"
+    class="p-button-raised p-button-rounded p-button-sm" />
+    <InputText id="newBidInp" v-model="bidInp" type="text" />
+
+    <div>
+      <div v-for="bid in post.bids" v-bind:key="bid._id">
+        <h2>{{ bid.amount }} </h2>
+        <Button label="Delete bid" @click="deleteBidEvt(bid._id)"
+        class="p-button-raised p-button-rounded p-button-sm" />
+        <Button label="Update bid" @click="updateBidEvt(bid._id)"
+        class="p-button-raised p-button-rounded p-button-sm" />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,6 +81,10 @@ export default {
   data() {
     return {
       showUpdate: false,
+      commentInp: null,
+      willUpdateComment: null,
+      willUpdateBid: null,
+      bidInp: null,
     };
   },
   computed: {
@@ -73,6 +105,24 @@ export default {
     },
     showUpdateEvt() {
       this.showUpdate = true;
+    },
+    newCommentEvt() {
+      this.$store.dispatch('commentStore/createComment', { postid: this.$route.params.postid, commentText: this.commentInp });
+    },
+    deleteCommentEvt(itemId) {
+      this.$store.dispatch('commentStore/deleteComment', { postid: this.$route.params.postid, commentid: itemId });
+    },
+    updateCommentEvt(itemId) {
+      this.$store.dispatch('commentStore/updateComment', { postid: this.$route.params.postid, commentid: itemId, commentText: this.commentInp });
+    },
+    newBidEvt() {
+      this.$store.dispatch('bidStore/createBid', { postid: this.$route.params.postid, amount: this.bidInp });
+    },
+    deleteBidEvt(itemId) {
+      this.$store.dispatch('bidStore/deleteBid', { postid: this.$route.params.postid, bidid: itemId });
+    },
+    updateBidEvt(itemId) {
+      this.$store.dispatch('bidStore/updateBid', { postid: this.$route.params.postid, bidid: itemId, amount: this.bidInp });
     },
   },
 };
