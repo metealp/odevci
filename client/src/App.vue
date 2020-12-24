@@ -17,6 +17,9 @@ export default {
   components: {
     Header,
   },
+  created() {
+    this.$store.dispatch('authStore/checkLocalStorage');
+  },
   // mounted() {
   //   // eslint-disable-next-line no-undef
   //   FB.getLoginStatus((response) => {

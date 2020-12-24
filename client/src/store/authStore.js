@@ -1,4 +1,5 @@
 import axios from 'axios';
+import JWT from 'jsonwebtoken';
 
 const qs = require('querystring');
 
@@ -16,18 +17,19 @@ export const authStore = {
       state.isLoggedIn = true;
       state.userid = payload.userid;
       state.userToken = payload.token;
+      localStorage.setItem('access_token', payload.token);
     },
     setUserTimeout(state, expireIn) {
       setTimeout(() => {
         state.userid = '';
         state.isLoggedIn = false;
-        localStorage.setItem('token', "");
+        localStorage.setItem('access_token', "");
       }, expireIn);
     },
     unsetUser(state) {
       state.isLoggedIn = false;
       state.userid = '';
-      localStorage.setItem('token', "");
+      localStorage.setItem('access_token', "");
     },
   },
   actions: {
@@ -97,6 +99,18 @@ export const authStore = {
     },
     signUserOut(context) {
       context.commit('unsetUser');
+    },
+    checkLocalStorage(context) {
+      if (localStorage.getItem('access_token')) {
+        const decodedToken = JWT.decode(localStorage.getItem('access_token'));
+        if (decodedToken.iss == "Kelam") {
+          if (decodedToken.exp > new Date().getTime()) {
+            context.commit('setUser', { userid: decodedToken.sub._id, token: localStorage.getItem('access_token') });
+          } else {
+            context.commit('unsetUser');
+          }
+        }
+      }
     },
   },
   // getters: {
